@@ -1,0 +1,35 @@
+{
+  "name": "nexmo-number-verify-sdk",
+  "version": "0.0.1",
+  "description": "Wrapper around Nexmo API for Number Verify",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mtt87/nexmo-verify-js-sdk.git"
+  },
+  "keywords": [
+    "nexmo",
+    "number-verify",
+    "api",
+    "js"
+  ],
+  "author": "Mattia Asti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mtt87/nexmo-verify-js-sdk/issues"
+  },
+  "homepage": "https://github.com/mtt87/nexmo-verify-js-sdk#readme",
+  "dependencies": {
+    "qs": "^3.1.0",
+    "request": "^2.57.0"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "chai-string": "^1.1.2",
+    "mocha": "^2.2.5"
+  }
+}
