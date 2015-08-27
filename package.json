@@ -1,35 +1,71 @@
 {
-  "name": "nexmo-number-verify-sdk",
-  "version": "0.0.1",
-  "description": "Wrapper around Nexmo API for Number Verify",
-  "main": "index.js",
+  "name": "verify-js-sdk",
+  "version": "0.1.0",
+  "description": "JS SDK for Nexmo Verify API",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "",
-    "start": "node index.js"
+    "test": "mocha tests/*.js --reporter nyan --compilers js:babel/register",
+    "start": "node index.js",
+    "build": "gulp build",
+    "jquery-example": "gulp serve:jquery",
+    "angular-example": "gulp serve:angular",
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile",
+    "watch": "gulp watch",
+    "eslint": "gulp lint"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mtt87/nexmo-verify-js-sdk.git"
+    "url": "https://github.com/nexmoinc/verify-js-sdk.git"
   },
   "keywords": [
     "nexmo",
+    "verify",
     "number-verify",
     "api",
-    "js"
+    "js",
+    "SDK"
   ],
   "author": "Mattia Asti",
-  "license": "MIT",
+  "license": "SEE LICENSE IN <LICENSE>",
   "bugs": {
-    "url": "https://github.com/mtt87/nexmo-verify-js-sdk/issues"
+    "url": "https://github.com/nexmoinc/verify-js-sdk/issues"
   },
-  "homepage": "https://github.com/mtt87/nexmo-verify-js-sdk#readme",
+  "homepage": "https://github.com/nexmoinc/verify-js-sdk#readme",
   "dependencies": {
-    "qs": "^3.1.0",
-    "request": "^2.57.0"
+    "es6-promise": "^2.3.0",
+    "ip": "^0.3.3",
+    "macaddress": "^0.2.8",
+    "popsicle": "^1.1.0",
+    "sort-keys": "^1.1.1"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "chai-string": "^1.1.2",
-    "mocha": "^2.2.5"
-  }
+    "babel": "^5.8.21",
+    "babel-core": "^5.8.21",
+    "babel-eslint": "^4.0.5",
+    "babelify": "^6.1.3",
+    "browser-sync": "^2.8.2",
+    "browserify": "^11.0.1",
+    "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0",
+    "del": "^1.2.0",
+    "eslint": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.0",
+    "gulp-copy": "0.0.2",
+    "gulp-eslint": "^1.0.0",
+    "gulp-load-plugins": "^1.0.0-rc",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.6",
+    "mocha": "^2.2.5",
+    "nock": "^2.10.0",
+    "pre-commit": "^1.1.1",
+    "prompt": "^0.2.14"
+  },
+  "pre-commit": [
+    "eslint",
+    "test"
+  ]
 }
