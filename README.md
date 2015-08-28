@@ -3,7 +3,7 @@ Nexmo Verify enables you to verify whether one of your end users has access to a
 [Documentation](https://docs.nexmo.com/index.php/verify)
 
 ## Install the SDK
-**Node** `npm install --save nexmo-verify-sdk` (name to confirm??)  
+**Node** `npm install --save nexmo-verify-sdk`  
 ```javascript
 var Nexmo = require('nexmo-verify-sdk');
 ```
