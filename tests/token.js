@@ -1,4 +1,4 @@
-import config from '../config.json';
+import config from './config.example.json';
 import Nexmo from '../src/index.js';
 import chai from 'chai';
 import nock from 'nock';
