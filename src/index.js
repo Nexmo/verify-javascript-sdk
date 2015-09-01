@@ -7,16 +7,15 @@ import macaddress from 'macaddress';
 
 const ip = require('ip').address();
 
-let deviceId;
-macaddress.one((err, mac) => {
+const deviceId = macaddress.one((err, mac) => {
   if (err) {
     throw err;
   }
-  deviceId = mac;
+  return mac;
 });
 
-function NexmoVerify(cfg) {
-  const config = cfg || {};
+
+function NexmoVerify(config = {}) {
   this.appId = config.appId;
   this.sharedSecret = config.sharedSecret;
   this.deviceId = deviceId;
