@@ -1,6 +1,6 @@
 {
   "name": "verify-js-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "JS SDK for Nexmo Verify API",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nexmoinc/verify-js-sdk.git"
+    "url": "https://github.com/Nexmo/verify-javascript-sdk"
   },
   "keywords": [
     "nexmo",

@@ -63,7 +63,7 @@ describe('Check the server response', () => {
   it('should return true if the signature is valid', () => {
     const response = {
       headers: {
-        'x-nexmo-response-signature': '78d054882b2a8d1562d90d7eb4cb0987',
+        'x-nexmo-response-signature': '41d30b9d645e32f386fa0719b819ee7a',
       },
       body: {
         result_code: 0,
