@@ -16,7 +16,7 @@ function nexmoHeaders() {
     req.set('Content-type', 'application/x-www-form-urlencoded');
     req.set('Content-Encoding', 'UTF-8');
     req.set('X-NEXMO-SDK-OS-FAMILY', 'JS');
-    req.set('X-NEXMO-SDK-REVISION', '0.1');
+    req.set('X-NEXMO-SDK-REVISION', '0.2');
   };
 }
 
@@ -33,7 +33,7 @@ function isResponseValid(response, sharedSecret) {
   if (!response.headers['x-nexmo-response-signature']) {
     return false;
   }
-  let r = JSON.stringify(response.body);
+  let r = JSON.stringify(response.body, null, 4);
   const s = response.headers['x-nexmo-response-signature'];
   r = r + sharedSecret;
   const responseMd5 = crypto.createHash('md5').update(r).digest('hex');
