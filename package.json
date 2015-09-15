@@ -7,8 +7,7 @@
     "test": "mocha tests/*.js --reporter nyan --compilers js:babel/register",
     "start": "node index.js",
     "build": "gulp",
-    "compile": "babel -d lib/ src/",
-    "prepublish": "npm run compile",
+    "prepublish": "npm run build",
     "watch": "gulp watch",
     "eslint": "gulp lint"
   },
