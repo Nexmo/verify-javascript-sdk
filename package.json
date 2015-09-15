@@ -1,5 +1,5 @@
 {
-  "name": "verify-js-sdk",
+  "name": "verify-javascript-sdk",
   "version": "0.2.0",
   "description": "JS SDK for Nexmo Verify API",
   "main": "lib/index.js",
@@ -7,8 +7,6 @@
     "test": "mocha tests/*.js --reporter nyan --compilers js:babel/register",
     "start": "node index.js",
     "build": "gulp build",
-    "jquery-example": "gulp serve:jquery",
-    "angular-example": "gulp serve:angular",
     "compile": "babel -d lib/ src/",
     "prepublish": "npm run compile",
     "watch": "gulp watch",
@@ -23,15 +21,14 @@
     "verify",
     "number-verify",
     "api",
-    "js",
     "SDK"
   ],
   "author": "Mattia Asti",
   "license": "SEE LICENSE IN <LICENSE>",
   "bugs": {
-    "url": "https://github.com/nexmoinc/verify-js-sdk/issues"
+    "url": "https://github.com/Nexmo/verify-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/nexmoinc/verify-js-sdk#readme",
+  "homepage": "https://github.com/Nexmo/verify-javascript-sdk#readme",
   "dependencies": {
     "es6-promise": "^3.0.2",
     "ip": "^0.3.3",
