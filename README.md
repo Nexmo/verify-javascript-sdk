@@ -3,9 +3,12 @@ Nexmo Verify enables you to verify whether one of your end users has access to a
 [Documentation](https://docs.nexmo.com/index.php/verify)
 
 ## Install the SDK
-**Node** `npm install --save verify-javascript-sdk`  
+`npm install --save verify-javascript-sdk`  
 ```javascript
-var Nexmo = require('verify-javascript-sdk');
+// ES5
+var NexmoVerify = require('verify-javascript-sdk');
+// ES6
+import 'NexmoVerify' from 'verify-javascript-sdk';
 ```
 
 ## API
@@ -33,7 +36,7 @@ Example
 ```javascript
 N.verify({
   number: 440201234567,
-  country: 'UK', // optional
+  country: 'GB', // optional
   lg: 'en-US' //optional
 }).then(function(status) {
   // return the user_status
