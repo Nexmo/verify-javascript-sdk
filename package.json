@@ -1,6 +1,6 @@
 {
   "name": "verify-javascript-sdk",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "JS SDK for Nexmo Verify API",
   "main": "lib/index.js",
   "scripts": {
