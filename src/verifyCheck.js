@@ -1,7 +1,8 @@
 import popsicle from 'popsicle';
 import shared from './shared.js';
-import checkToken from './token.js';
+import t from './token.js';
 
+const checkToken = t.checkToken;
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verifyCheck;
 const generateParameters = shared.generateParameters;
@@ -16,9 +17,9 @@ function verifyCheck(params) {
       return reject('You need to set credentials');
     }
 
-    if (!params.number) {
+    if (!params || !params.number) {
       return reject('You need to pass a number');
-    } else if (!params.code) {
+    } else if (!params || !params.code) {
       return reject('You need to pass a pin code');
     }
 

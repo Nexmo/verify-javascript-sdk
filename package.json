@@ -4,7 +4,7 @@
   "description": "JS SDK for Nexmo Verify API",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha tests/*.js --reporter nyan --compilers js:babel-register",
+    "test": "mocha tests/*.js --compilers js:babel-register",
     "build": "babel src -d lib",
     "prepublish": "npm run build",
     "watch": "gulp watch",

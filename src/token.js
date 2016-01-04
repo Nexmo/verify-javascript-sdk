@@ -34,7 +34,7 @@ function getToken(client) {
 
 function checkToken(client) {
   return new Promise((resolve, reject) => {
-    if (!client.token || client.token === 'invalid') {
+    if (!client || !client.token || client.token === 'invalid') {
       getToken(client).then((token) => {
         return resolve(token);
       }, (error) => {
