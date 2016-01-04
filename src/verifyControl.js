@@ -1,8 +1,7 @@
 import popsicle from 'popsicle';
 import shared from './shared.js';
-import t from './token.js';
+import {checkToken} from './token.js';
 
-const checkToken = t.checkToken;
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verifyControl;
 const generateParameters = shared.generateParameters;
