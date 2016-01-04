@@ -52,6 +52,10 @@ function verify(params) {
                 client.token = 'invalid';
                 return verify.call(client, params);
               }
+              // return an error if second time it can't retrieve the token ?
+              // else {
+              //   return reject(res.body.result_message);
+              // }
             } else {
               retry = 0;
             }
