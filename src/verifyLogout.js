@@ -1,6 +1,6 @@
 import popsicle from 'popsicle';
 import shared from './shared.js';
-import {checkToken} from './token.js';
+import checkToken from './token.js';
 
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verifyLogout;
@@ -37,10 +37,15 @@ function verifyLogout(params) {
       popsicle(apiEndpoint + generateParameters(queryParams, client))
         .use(nexmoHeaders())
         .then((res) => {
-          if (res.body.result_code === 5 && retry < 1) {
-            retry = 1;
-            client.token = 'invalid';
-            return verifyLogout.call(client, params);
+          // Check if the token is invalid request a new one and call again the function
+          if (res.body.result_code === 3) {
+            if (retry < 1) {
+              retry = 1;
+              client.token = 'invalid';
+              return verifyLogout.call(client, params);
+            }
+          } else {
+            retry = 0;
           }
 
           // Any result_code different than zero means an error, return the error.
