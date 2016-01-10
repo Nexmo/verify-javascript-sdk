@@ -56,8 +56,10 @@ function verify(params) {
                 client.token = 'invalid';
                 return verify.call(client, params);
               }
-              // return an error if second time it can't retrieve the token ?
+              // what happens if the second time it can't retrieve the token?
+              // should it try again n times?
               // else {
+              //   retry += 1;
               //   return reject(res.body.result_message);
               // }
             } else {
