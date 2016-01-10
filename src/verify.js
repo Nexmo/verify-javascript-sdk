@@ -1,6 +1,9 @@
 import popsicle from 'popsicle';
 import shared from './shared.js';
-import {checkToken} from './token.js';
+import {
+  checkToken,
+}
+from './token.js';
 
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verify;
@@ -21,6 +24,8 @@ function verify(params) {
       // console.log('console: number missing');
       return reject('You need to pass a number');
     }
+
+    // console.log('retry: ', retry);
 
     checkToken(client)
       .then((token) => {
@@ -69,11 +74,13 @@ function verify(params) {
             } else {
               return resolve(res.body.user_status);
             }
-          }, (err) => {
-            return reject('There was an error with the verify request: ', err);
+          })
+          .catch((err) => {
+            return reject(err);
           });
-      }, (err) => {
-        return reject('There was an error retrieving the token: ', err);
+      })
+      .catch((err) => {
+        return reject(err);
       });
   });
 }

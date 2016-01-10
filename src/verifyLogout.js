@@ -58,11 +58,13 @@ function verifyLogout(params) {
           } else {
             return resolve(res.body.user_status);
           }
-        }, (err) => {
-          return reject('There was an error with the verify request: ', err);
+        })
+        .catch((err) => {
+          return reject(err);
         });
-    }, (err) => {
-      return reject('There was an error retrieving the token: ', err);
+    })
+    .catch((err) => {
+      return reject(err);
     });
   });
 }

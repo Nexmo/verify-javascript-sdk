@@ -16,7 +16,7 @@ describe('Check if there is a token', () => {
     assert.eventually.equal(checkToken(n), '1234567890');
   });
 
-  it('returns a valid token if it\' not present', () => {
+  it('returns a valid token if it\'s not present', () => {
     const n = new Nexmo({
       appId: '123456',
       sharedSecret: '123456',
