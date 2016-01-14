@@ -16,9 +16,9 @@ function verifyCheck(params) {
       return reject('You need to set credentials');
     }
 
-    if (!params.number) {
+    if (!params || !params.number) {
       return reject('You need to pass a number');
-    } else if (!params.code) {
+    } else if (!params || !params.code) {
       return reject('You need to pass a pin code');
     }
 
@@ -40,10 +40,15 @@ function verifyCheck(params) {
       popsicle(apiEndpoint + generateParameters(queryParams, client))
         .use(nexmoHeaders())
         .then((res) => {
-          if (res.body.result_code === 5 && retry < 1) {
-            retry = 1;
-            client.token = 'invalid';
-            return verifyCheck.call(client, params);
+          // Check if the token is invalid request a new one and call again the function
+          if (res.body.result_code === 3) {
+            if (retry < 1) {
+              retry = 1;
+              client.token = 'invalid';
+              return verifyCheck.call(client, params);
+            }
+          } else {
+            retry = 0;
           }
 
           // Any result_code different than zero means an error, return the error.
@@ -56,11 +61,13 @@ function verifyCheck(params) {
           } else {
             return resolve(res.body.user_status);
           }
-        }, (err) => {
-          return reject('There was an error with the verify request: ', err);
+        })
+        .catch((err) => {
+          return reject(err);
         });
-    }, (err) => {
-      return reject('There was an error retrieving the token: ', err);
+    })
+    .catch((err) => {
+      return reject(err);
     });
   });
 }

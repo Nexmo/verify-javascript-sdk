@@ -3,3 +3,4 @@ lib/
 .DS_Store
 config.json
 debug.js
+npm-debug.log

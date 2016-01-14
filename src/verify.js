@@ -1,6 +1,9 @@
 import popsicle from 'popsicle';
 import shared from './shared.js';
-import {checkToken} from './token.js';
+import {
+  checkToken,
+}
+from './token.js';
 
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verify;
@@ -13,12 +16,16 @@ function verify(params) {
 
   return new Promise((resolve, reject) => {
     if (!shared.isClientSet(client)) {
+      // console.log('console: credentials missing');
       return reject('You need to set credentials');
     }
 
-    if (!params.number) {
+    if (!params || !params.number) {
+      // console.log('console: number missing');
       return reject('You need to pass a number');
     }
+
+    // console.log('retry: ', retry);
 
     checkToken(client)
       .then((token) => {
@@ -42,10 +49,21 @@ function verify(params) {
         popsicle(apiEndpoint + generateParameters(queryParams, client))
           .use(nexmoHeaders())
           .then((res) => {
-            if (res.body.result_code === 5 && retry < 1) {
-              retry = 1;
-              client.token = 'invalid';
-              return verify.call(client, params);
+            // Check if the token is invalid request a new one and call again the function
+            if (res.body.result_code === 3) {
+              if (retry < 1) {
+                retry = 1;
+                client.token = 'invalid';
+                return verify.call(client, params);
+              }
+              // what happens if the second time it can't retrieve the token?
+              // should it try again n times?
+              // else {
+              //   retry += 1;
+              //   return reject(res.body.result_message);
+              // }
+            } else {
+              retry = 0;
             }
 
             // Any result_code different than zero means an error, return the error.
@@ -58,11 +76,13 @@ function verify(params) {
             } else {
               return resolve(res.body.user_status);
             }
-          }, (err) => {
-            return reject('There was an error with the verify request: ', err);
+          })
+          .catch((err) => {
+            return reject(err);
           });
-      }, (err) => {
-        return reject('There was an error retrieving the token: ', err);
+      })
+      .catch((err) => {
+        return reject(err);
       });
   });
 }

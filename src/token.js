@@ -26,7 +26,8 @@ function getToken(client) {
         } else {
           return resolve(res.body.token);
         }
-      }, (err) => {
+      })
+      .catch((err) => {
         return reject(err);
       });
   });
@@ -34,12 +35,14 @@ function getToken(client) {
 
 function checkToken(client) {
   return new Promise((resolve, reject) => {
-    if (!client.token || client.token === 'invalid') {
-      getToken(client).then((token) => {
-        return resolve(token);
-      }, (error) => {
-        return reject(error);
-      });
+    if (!client || !client.token || client.token === 'invalid') {
+      getToken(client)
+        .then((token) => {
+          return resolve(token);
+        })
+        .catch((error) => {
+          return reject(error);
+        });
     } else {
       return resolve(client.token);
     }

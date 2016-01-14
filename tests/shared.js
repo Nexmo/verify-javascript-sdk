@@ -36,7 +36,7 @@ describe('Check if client is set (appId and sharedSecret)', () => {
 });
 
 describe('Check the server response', () => {
-  it('should return false if "x-nexmo-response-signature" is missing', () => {
+  it('should return false if header "x-nexmo-response-signature" is missing', () => {
     const response = {
       headers: {},
       body: {},

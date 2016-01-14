@@ -40,10 +40,15 @@ function verifyControl(params) {
       popsicle(apiEndpoint + generateParameters(queryParams, client))
         .use(nexmoHeaders())
         .then((res) => {
-          if (res.body.result_code === 5 && retry < 1) {
-            retry = 1;
-            client.token = 'invalid';
-            return verifyControl.call(client, params);
+          // Check if the token is invalid request a new one and call again the function
+          if (res.body.result_code === 3) {
+            if (retry < 1) {
+              retry = 1;
+              client.token = 'invalid';
+              return verifyControl.call(client, params);
+            }
+          } else {
+            retry = 0;
           }
 
           // Any result_code different than zero means an error, return the error.
@@ -56,11 +61,13 @@ function verifyControl(params) {
           } else {
             return resolve(res.body.user_status);
           }
-        }, (err) => {
-          return reject('There was an error with the verify request: ', err);
+        })
+        .catch((err) => {
+          return reject(err);
         });
-    }, (err) => {
-      return reject('There was an error retrieving the token: ', err);
+    })
+    .catch((err) => {
+      return reject(err);
     });
   });
 }
