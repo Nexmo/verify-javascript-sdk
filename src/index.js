@@ -1,9 +1,10 @@
-import verify from './verify.js';
-import verifyCheck from './verifyCheck.js';
-import verifyControl from './verifyControl.js';
-import verifySearch from './verifySearch.js';
-import verifyLogout from './verifyLogout.js';
 import macaddress from 'macaddress';
+
+import verify from './verify';
+import verifyCheck from './verifyCheck';
+import verifyControl from './verifyControl';
+import verifySearch from './verifySearch';
+import verifyLogout from './verifyLogout';
 
 const ip = require('ip').address();
 

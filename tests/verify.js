@@ -1,9 +1,11 @@
-import config from './config.example.json';
-import Nexmo from '../src/index.js';
 import chai from 'chai';
 import nock from 'nock';
-const assert = chai.assert;
 import chaiAsPromised from 'chai-as-promised';
+
+import config from './config.example.json';
+import Nexmo from '../src/index';
+const assert = chai.assert;
+
 chai.use(chaiAsPromised);
 
 describe('Verify', () => {

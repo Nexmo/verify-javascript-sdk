@@ -1,5 +1,5 @@
 import popsicle from 'popsicle';
-import shared from './shared.js';
+import shared from './shared';
 
 const generateParameters = shared.generateParameters;
 const nexmoHeaders = shared.nexmoHeaders;
@@ -8,48 +8,41 @@ const apiEndpoint = shared.apiEndpoints.getToken;
 function getToken(client) {
   return new Promise((resolve, reject) => {
     const queryParams = {
-      'app_id': client.appId,
-      'device_id': client.deviceId,
-      'source_ip_address': client.sourceIp,
+      app_id: client.appId,
+      device_id: client.deviceId,
+      source_ip_address: client.sourceIp,
     };
 
     popsicle(apiEndpoint + generateParameters(queryParams, client))
       .use(nexmoHeaders())
       .then((res) => {
+        const body = JSON.parse(res.body);
         // Any result_code different than zero means an error, return the error.
-        if (res.body.result_code !== 0) {
-          return reject(res.body.result_message);
+        if (body.result_code !== 0) {
+          return reject(body.result_message);
         }
 
         if (!shared.isResponseValid(res, client.sharedSecret)) {
           return reject('Response verification failed');
-        } else {
-          return resolve(res.body.token);
         }
+        return resolve(body.token);
       })
-      .catch((err) => {
-        return reject(err);
-      });
+      .catch(err => reject(err));
   });
 }
 
 function checkToken(client) {
   return new Promise((resolve, reject) => {
     if (!client || !client.token || client.token === 'invalid') {
-      getToken(client)
-        .then((token) => {
-          return resolve(token);
-        })
-        .catch((error) => {
-          return reject(error);
-        });
-    } else {
-      return resolve(client.token);
+      return getToken(client)
+        .then(token => resolve(token))
+        .catch(error => reject(error));
     }
+    return resolve(client.token);
   });
 }
 
 module.exports = {
-  checkToken: checkToken,
-  getToken: getToken,
+  checkToken,
+  getToken,
 };

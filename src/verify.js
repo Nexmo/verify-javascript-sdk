@@ -1,9 +1,9 @@
 import popsicle from 'popsicle';
-import shared from './shared.js';
+import shared from './shared';
 import {
   checkToken,
 }
-from './token.js';
+from './token';
 
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verify;
@@ -16,26 +16,23 @@ function verify(params) {
 
   return new Promise((resolve, reject) => {
     if (!shared.isClientSet(client)) {
-      // console.log('console: credentials missing');
       return reject('You need to set credentials');
     }
 
     if (!params || !params.number) {
-      // console.log('console: number missing');
       return reject('You need to pass a number');
     }
 
-    // console.log('retry: ', retry);
-
-    checkToken(client)
+    return checkToken(client)
       .then((token) => {
+        console.log('token', token);
         client.token = token;
 
         const queryParams = {
-          'app_id': client.appId,
-          'device_id': client.deviceId,
-          'number': params.number,
-          'source_ip_address': client.sourceIp,
+          app_id: client.appId,
+          device_id: client.deviceId,
+          number: params.number,
+          source_ip_address: client.sourceIp,
         };
 
         if (params.lg) {
@@ -49,8 +46,9 @@ function verify(params) {
         popsicle(apiEndpoint + generateParameters(queryParams, client))
           .use(nexmoHeaders())
           .then((res) => {
+            const body = JSON.parse(res.body);
             // Check if the token is invalid request a new one and call again the function
-            if (res.body.result_code === 3) {
+            if (body.result_code === 3) {
               if (retry < 1) {
                 retry = 1;
                 client.token = 'invalid';
@@ -60,29 +58,30 @@ function verify(params) {
               // should it try again n times?
               // else {
               //   retry += 1;
-              //   return reject(res.body.result_message);
+              //   return reject(body.result_message);
               // }
             } else {
               retry = 0;
             }
 
             // Any result_code different than zero means an error, return the error.
-            if (res.body.result_code !== 0) {
-              return reject(res.body.result_message);
+            if (body.result_code !== 0) {
+              return reject(body.result_message);
             }
 
             if (!shared.isResponseValid(res, client.sharedSecret)) {
               return reject('Response verification failed');
-            } else {
-              return resolve(res.body.user_status);
             }
+            return resolve(body.user_status);
           })
-          .catch((err) => {
-            return reject(err);
+          .catch(err => {
+            console.log('err verify', err);
+            reject(err);
           });
       })
-      .catch((err) => {
-        return reject(err);
+      .catch(err => {
+        console.log('err checkToken', err);
+        reject(err);
       });
   });
 }

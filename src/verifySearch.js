@@ -1,6 +1,6 @@
 import popsicle from 'popsicle';
-import shared from './shared.js';
-import {checkToken} from './token.js';
+import shared from './shared';
+import { checkToken } from './token';
 
 const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verifySearch;
@@ -20,14 +20,14 @@ function verifySearch(params) {
       return reject('You need to pass a number');
     }
 
-    checkToken(client).then((token) => {
+    return checkToken(client).then((token) => {
       client.token = token;
 
       const queryParams = {
-        'app_id': client.appId,
-        'device_id': client.deviceId,
-        'number': params.number,
-        'source_ip_address': client.sourceIp,
+        app_id: client.appId,
+        device_id: client.deviceId,
+        number: params.number,
+        source_ip_address: client.sourceIp,
       };
 
       if (params.country) {
@@ -55,17 +55,12 @@ function verifySearch(params) {
 
           if (!shared.isResponseValid(res, client.sharedSecret)) {
             return reject('Response verification failed');
-          } else {
-            return resolve(res.body.user_status);
           }
+          return resolve(res.body.user_status);
         })
-        .catch((err) => {
-          return reject(err);
-        });
+        .catch(err => reject(err));
     })
-    .catch((err) => {
-      return reject(err);
-    });
+    .catch(err => reject(err));
   });
 }
 

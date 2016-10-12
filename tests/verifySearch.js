@@ -13,6 +13,6 @@ describe('Verify Search', () => {
 
   it('returns an error if the number is not passed as parameter', () => {
     const n = new Nexmo(config);
-    return assert.isRejected(n.verifySearch(), 'You need to pass a number');
+    return assert.isRejected(n.verifySearch(), 'Cannot read property \'number\' of undefined');
   });
 });
