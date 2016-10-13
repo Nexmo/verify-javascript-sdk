@@ -13,7 +13,7 @@ describe('Verify Control', () => {
 
   it('returns an error if the number is not passed as parameter', () => {
     const n = new Nexmo(config);
-    return assert.isRejected(n.verifyControl(), 'Cannot read property \'number\' of undefined');
+    return assert.isRejected(n.verifyControl(), 'You need to pass a number');
   });
 
   it('returns an error if the pin is not passed as parameter', () => {
