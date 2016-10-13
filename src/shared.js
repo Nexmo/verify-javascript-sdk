@@ -3,24 +3,13 @@ import querystring from 'querystring';
 import crypto from 'crypto';
 
 const apiEndpoints = {
-  getToken: 'https://api.nexmo.com/sdk/token/json?',
-  verify: 'https://api.nexmo.com/sdk/verify/json?',
-  verifyCheck: 'https://api.nexmo.com/sdk/verify/check/json?',
-  verifyControl: 'https://api.nexmo.com/sdk/verify/control/json?',
-  verifySearch: 'https://api.nexmo.com/sdk/verify/search/json?',
-  verifyLogout: 'https://api.nexmo.com/sdk/verify/logout/json?',
+  getToken: 'token/json?',
+  verify: 'verify/json?',
+  verifyCheck: 'verify/check/json?',
+  verifyControl: 'verify/control/json?',
+  verifySearch: 'verify/search/json?',
+  verifyLogout: 'verify/logout/json?',
 };
-
-function nexmoHeaders() {
-  return (req, next) => {
-    req.set('Content-type', 'application/x-www-form-urlencoded');
-    req.set('Content-Encoding', 'UTF-8');
-    req.set('X-NEXMO-SDK-OS-FAMILY', 'JS');
-    req.set('X-NEXMO-SDK-REVISION', '0.2');
-    return next();
-  };
-}
-
 
 function isClientSet(client) {
   if (client.appId === undefined || client.sharedSecret === undefined) {
@@ -30,11 +19,10 @@ function isClientSet(client) {
 }
 
 function isResponseValid(response, sharedSecret) {
-  console.log(response);
   if (response.headers && !response.headers['x-nexmo-response-signature']) {
     return false;
   }
-  let r = JSON.stringify(JSON.parse(response.body), null, 4);
+  let r = JSON.stringify(response.data, null, 4);
   const s = response.headers['x-nexmo-response-signature'];
   r += sharedSecret;
   const responseMd5 = crypto.createHash('md5').update(r).digest('hex');
@@ -90,6 +78,5 @@ module.exports = {
   createSignature,
   isClientSet,
   isResponseValid,
-  nexmoHeaders,
   generateParameters,
 };

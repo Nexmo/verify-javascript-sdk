@@ -15,7 +15,6 @@ const deviceId = macaddress.one((err, mac) => {
   return mac;
 });
 
-
 function NexmoVerify(config = {}) {
   this.appId = config.appId;
   this.sharedSecret = config.sharedSecret;
@@ -23,16 +22,10 @@ function NexmoVerify(config = {}) {
   this.sourceIp = ip;
 
   this.verify = verify.bind(this);
-  this.verifyCheck = this.verifyCheck.bind(this);
-  this.verifyControl = this.verifyControl.bind(this);
-  this.verifySearch = this.verifySearch.bind(this);
-  this.verifyLogout = this.verifyLogout.bind(this);
+  this.verifyCheck = verifyCheck.bind(this);
+  this.verifyControl = verifyControl.bind(this);
+  this.verifySearch = verifySearch.bind(this);
+  this.verifyLogout = verifyLogout.bind(this);
 }
-
-NexmoVerify.prototype.verify = verify;
-NexmoVerify.prototype.verifyCheck = verifyCheck;
-NexmoVerify.prototype.verifyControl = verifyControl;
-NexmoVerify.prototype.verifySearch = verifySearch;
-NexmoVerify.prototype.verifyLogout = verifyLogout;
 
 module.exports = NexmoVerify;

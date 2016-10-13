@@ -1,8 +1,7 @@
-import popsicle from 'popsicle';
+import nexmoRequest from './nexmoRequest';
 import shared from './shared';
 
 const generateParameters = shared.generateParameters;
-const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.getToken;
 
 function getToken(client) {
@@ -13,19 +12,17 @@ function getToken(client) {
       source_ip_address: client.sourceIp,
     };
 
-    popsicle(apiEndpoint + generateParameters(queryParams, client))
-      .use(nexmoHeaders())
+    nexmoRequest(apiEndpoint + generateParameters(queryParams, client))
       .then((res) => {
-        const body = JSON.parse(res.body);
         // Any result_code different than zero means an error, return the error.
-        if (body.result_code !== 0) {
-          return reject(body.result_message);
+        if (res.data.result_code !== 0) {
+          return reject(res.data.result_message);
         }
 
         if (!shared.isResponseValid(res, client.sharedSecret)) {
           return reject('Response verification failed');
         }
-        return resolve(body.token);
+        return resolve(res.data.token);
       })
       .catch(err => reject(err));
   });

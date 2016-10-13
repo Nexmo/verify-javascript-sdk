@@ -1,8 +1,7 @@
-import popsicle from 'popsicle';
+import nexmoRequest from './nexmoRequest';
 import shared from './shared';
 import { checkToken } from './token';
 
-const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verifyLogout;
 const generateParameters = shared.generateParameters;
 
@@ -34,12 +33,10 @@ function verifyLogout(params) {
         queryParams.country = params.country;
       }
 
-      popsicle(apiEndpoint + generateParameters(queryParams, client))
-        .use(nexmoHeaders())
+      nexmoRequest(apiEndpoint + generateParameters(queryParams, client))
         .then((res) => {
-          const body = JSON.parse(res.body);
           // Check if the token is invalid request a new one and call again the function
-          if (body.result_code === 3) {
+          if (res.data.result_code === 3) {
             if (retry < 1) {
               retry = 1;
               client.token = 'invalid';
@@ -50,14 +47,14 @@ function verifyLogout(params) {
           }
 
           // Any result_code different than zero means an error, return the error.
-          if (body.result_code !== 0) {
-            return reject(body.result_message);
+          if (res.data.result_code !== 0) {
+            return reject(res.data.result_message);
           }
 
           if (!shared.isResponseValid(res, client.sharedSecret)) {
             return reject('Response verification failed');
           }
-          return resolve(body.user_status);
+          return resolve(res.data.user_status);
         })
         .catch(err => reject(err));
     })

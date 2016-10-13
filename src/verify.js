@@ -1,11 +1,10 @@
-import popsicle from 'popsicle';
 import shared from './shared';
+import nexmoRequest from './nexmoRequest';
 import {
   checkToken,
 }
 from './token';
 
-const nexmoHeaders = shared.nexmoHeaders;
 const apiEndpoint = shared.apiEndpoints.verify;
 const generateParameters = shared.generateParameters;
 
@@ -25,7 +24,6 @@ function verify(params) {
 
     return checkToken(client)
       .then((token) => {
-        console.log('token', token);
         client.token = token;
 
         const queryParams = {
@@ -43,46 +41,32 @@ function verify(params) {
           queryParams.country = params.country;
         }
 
-        popsicle(apiEndpoint + generateParameters(queryParams, client))
-          .use(nexmoHeaders())
+        nexmoRequest(apiEndpoint + generateParameters(queryParams, client))
           .then((res) => {
-            const body = JSON.parse(res.body);
             // Check if the token is invalid request a new one and call again the function
-            if (body.result_code === 3) {
+            if (res.data.result_code === 3) {
               if (retry < 1) {
                 retry = 1;
                 client.token = 'invalid';
                 return verify.call(client, params);
               }
-              // what happens if the second time it can't retrieve the token?
-              // should it try again n times?
-              // else {
-              //   retry += 1;
-              //   return reject(body.result_message);
-              // }
             } else {
               retry = 0;
             }
 
             // Any result_code different than zero means an error, return the error.
-            if (body.result_code !== 0) {
-              return reject(body.result_message);
+            if (res.data.result_code !== 0) {
+              return reject(res.data.result_message);
             }
 
             if (!shared.isResponseValid(res, client.sharedSecret)) {
               return reject('Response verification failed');
             }
-            return resolve(body.user_status);
+            return resolve(res.data.user_status);
           })
-          .catch(err => {
-            console.log('err verify', err);
-            reject(err);
-          });
+          .catch(err => reject(err));
       })
-      .catch(err => {
-        console.log('err checkToken', err);
-        reject(err);
-      });
+      .catch(err => reject(err));
   });
 }
 

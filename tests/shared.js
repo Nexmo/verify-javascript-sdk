@@ -3,7 +3,7 @@ import Nexmo from '../src/index.js';
 import chai from 'chai';
 import nock from 'nock';
 import shared from '../src/shared.js';
-import popsicle from 'popsicle';
+import nexmoRequest from '../src/nexmoRequest';
 const assert = chai.assert;
 
 describe('Popsicle nexmoHeaders plugin', () => {
@@ -13,13 +13,12 @@ describe('Popsicle nexmoHeaders plugin', () => {
       .query(true)
       .reply(200);
 
-    popsicle('https://api.nexmo.com/sdk/token/json')
-      .use(shared.nexmoHeaders())
+    nexmoRequest('token/json')
       .then((res) => {
         assert.equal(res.request.headers['content-type'], 'application/x-www-form-urlencoded');
         assert.equal(res.request.headers['content-encoding'], 'UTF-8');
         assert.equal(res.request.headers['x-nexmo-sdk-os-family'], 'JS');
-        assert.equal(res.request.headers['x-nexmo-sdk-revision'], '0.1');
+        assert.equal(res.request.headers['x-nexmo-sdk-revision'], '0.2');
       });
   });
 });
@@ -39,7 +38,7 @@ describe('Check the server response', () => {
   it('should return false if header "x-nexmo-response-signature" is missing', () => {
     const response = {
       headers: {},
-      body: {},
+      data: {},
     };
     return assert.equal(shared.isResponseValid(response), false);
   });
@@ -49,7 +48,7 @@ describe('Check the server response', () => {
       headers: {
         'x-nexmo-response-signature': 'wrong_signature',
       },
-      body: {
+      data: {
         result_code: 0,
         result_message: 'OK',
         timestamp: '1234567890',
@@ -65,7 +64,7 @@ describe('Check the server response', () => {
       headers: {
         'x-nexmo-response-signature': '41d30b9d645e32f386fa0719b819ee7a',
       },
-      body: {
+      data: {
         result_code: 0,
         result_message: 'OK',
         timestamp: '1234567890',
