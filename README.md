@@ -1,3 +1,7 @@
+# The Verify SDK will shut down effective 14th November, 2018. 
+
+## To assist with a seamless migration to the Verify API, we have prepared [technical documentation](https://www.nexmo.com/blog/2018/05/10/nexmo-verify-api-implementation-guide-dr/) that will guide you in implementing the Verify API into your client side applications.
+
 # Nexmo Verify SDK for JavaScript
 
 You use Nexmo Verify to verify that a user has access to a specific phone number. Nexmo sends a PIN code in an SMS or Text-To-Speech, your user enters this PIN into your App, you validate the PIN with Nexmo. With Verify SDK for JavaScript you easily integrate Verify functionality into your App.
